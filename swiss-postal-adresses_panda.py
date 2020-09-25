@@ -8,9 +8,11 @@ from elasticsearch.helpers import parallel_bulk
 
 from collections import deque
 
+filename = "Post_Adressdaten20200804.csv"
+
 # In memory processing, warning, this requires a lot of RAM
-data = pd.read_csv("Post_Adressdaten20200804.csv", low_memory=False, sep=";",names=np.arange(16),encoding = "ISO-8859-1")
-INDEX="dataframe03"
+data = pd.read_csv(filename, low_memory=False, sep=";",names=np.arange(16),encoding = "ISO-8859-1")
+INDEX="swiss-streets"
 TYPE= "record"
 def rec_to_es(df):
     import json
@@ -87,7 +89,7 @@ plzstr3.drop(list(plzstr3.filter(regex='_y$')),axis=1,inplace=True)
 es = Elasticsearch([
     {'host':'localhost',
     'port': 9200,
-    }],http_auth=('favrel','elastic')
+    }],http_auth=('elastic-user','elastic')
 )
 
 
@@ -98,12 +100,10 @@ plzstr3= plzstr3.fillna("").astype(str)
 # print first 10 entries
 #print(list(rec_to_es(plzstr3.head(10))))
 
+print("Loading data into ES index")
 # see https://github.com/elastic/elasticsearch-py/blob/master/examples/bulk-ingest/bulk-ingest.py
 #r = streaming_bulk(client=es,index=INDEX, actions=rec_to_es(plzstr3)) # return a dict
 r = parallel_bulk(client=es,index=INDEX, actions=rec_to_es(plzstr3), 
                        chunk_size=500, thread_count=8, queue_size=8)
 
 
-deque(r, maxlen=0)
-print(not r["errors"])
-print(r)
