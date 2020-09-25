@@ -24,7 +24,12 @@ In ElasticSearch, your can now search adresses, for example using:
       },
       "size": 400
     }
-
+## Limitations
+This code illustrates the process of converting the Swiss post adresses file into a Panda dataframe and inserting it into Elastic Search.
+It has the following limitations
+- Not all record types are handled or inserted into the ES index
+- The python code assumes you have enough RAM to run it in memory. Otherwise it will fail.
+- No id is specified, therefore ES use a generated one. This is a problem to maintain records in the index.
 
 ## Author
 Code by Ludovic Favre 
