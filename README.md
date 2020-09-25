@@ -1,6 +1,7 @@
 # Swiss Postal Addresses loading to ElasticSearch
 Load all swiss postal adresses from [Swiss Post](http://www.post.ch) in an ElasticSearch server instance using Python Panda library and the Elastic Search client.
-**No warrenty for completeness and correctness! Use at your own risk.**
+
+**No warranty for completeness and correctness! Use at your own risk.**
   
 ## Usage
  1. Download the latest post_adressdaten from https://service.post.ch/zopa/dlc/app/#!/main
